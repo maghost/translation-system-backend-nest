@@ -1,7 +1,15 @@
 import { Field, InputType } from '@nestjs/graphql';
 
 @InputType()
-export default class ProjectInput {
+class ProjectInput {
   @Field()
   readonly name: string;
 }
+
+@InputType()
+class DeleteProjectInput {
+  @Field()
+  readonly id: number;
+}
+
+export { ProjectInput, DeleteProjectInput };

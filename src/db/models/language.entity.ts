@@ -45,7 +45,7 @@ export default class Language {
   @ManyToOne(
     () => Project,
     project => project.languageConnection,
-    { primary: true },
+    { primary: true, onDelete: 'CASCADE' },
   )
   @JoinColumn({ name: 'project_id' })
   projectConnection: Promise<Project>;

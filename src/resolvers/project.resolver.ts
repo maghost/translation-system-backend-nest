@@ -2,7 +2,7 @@ import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 
 import RepoService from 'src/repo.service';
 import Project from 'src/db/models/project.entity';
-import ProjectInput from './input/project.input';
+import { ProjectInput, DeleteProjectInput } from './input/project.input';
 
 @Resolver(() => Project)
 export default class ProjectResolver {
@@ -23,6 +23,24 @@ export default class ProjectResolver {
     @Args('data') input: ProjectInput,
   ): Promise<Project> {
     const project = this.repoService.projectRepo.create({ name: input.name });
+
     return this.repoService.projectRepo.save(project);
+  }
+
+  @Mutation(() => Project, { nullable: true })
+  public async deleteProject(
+    @Args('data') input: DeleteProjectInput,
+  ): Promise<Project> {
+    const project = await this.repoService.projectRepo.findOne(input.id);
+
+    if (!project) {
+      return null;
+    }
+
+    const copy = { ...project };
+
+    await this.repoService.projectRepo.remove(project);
+
+    return copy;
   }
 }

@@ -1,7 +1,7 @@
 import { Field, InputType } from '@nestjs/graphql';
 
 @InputType()
-export default class LanguageInput {
+class LanguageInput {
   @Field()
   readonly projectId: number;
 
@@ -11,3 +11,11 @@ export default class LanguageInput {
   @Field()
   readonly label: string;
 }
+
+@InputType()
+class DeleteLanguageInput {
+  @Field()
+  readonly id: number;
+}
+
+export { LanguageInput, DeleteLanguageInput };

@@ -47,15 +47,16 @@ export class createLanguages1594393223172 implements MigrationInterface {
     ],
   });
 
-  private foreignKey = new TableForeignKey({
-    columnNames: ['project_id'],
-    referencedColumnNames: ['id'],
-    onDelete: 'CASCADE',
-    referencedTableName: 'projects',
-  });
-
   public async up(queryRunner: QueryRunner): Promise<any> {
+    const foreignKey = new TableForeignKey({
+      columnNames: ['project_id'],
+      referencedColumnNames: ['id'],
+      onDelete: 'CASCADE',
+      referencedTableName: 'projects',
+    });
+
     await queryRunner.createTable(this.table);
+    await queryRunner.createForeignKey('languages', foreignKey);
   }
 
   public async down(queryRunner: QueryRunner): Promise<any> {
