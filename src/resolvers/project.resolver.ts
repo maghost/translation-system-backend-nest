@@ -4,7 +4,7 @@ import RepoService from 'src/repo.service';
 import Project from 'src/db/models/project.entity';
 import ProjectInput from './input/project.input';
 
-@Resolver()
+@Resolver(() => Project)
 export default class ProjectResolver {
   constructor(private readonly repoService: RepoService) {}
 

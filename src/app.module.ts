@@ -6,11 +6,12 @@ import * as ormOptions from './config/orm';
 import RepoModule from './repo.module';
 
 import ProjectResolver from './resolvers/project.resolver';
+import LanguageResolver from './resolvers/language.resolver';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
-const gqlImports = [ProjectResolver];
+const gqlImports = [ProjectResolver, LanguageResolver];
 
 @Module({
   imports: [

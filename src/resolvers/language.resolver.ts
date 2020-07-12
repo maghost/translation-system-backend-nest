@@ -3,14 +3,17 @@ import {
   Mutation,
   Query,
   Resolver,
-  ResolveProperty,
+  ResolveField,
+  Parent,
+  Context,
 } from '@nestjs/graphql';
 
 import RepoService from 'src/repo.service';
 import Language from 'src/db/models/language.entity';
 import LanguageInput from './input/language.input';
+import Project from 'src/db/models/project.entity';
 
-@Resolver()
+@Resolver(() => Language)
 export default class LanguageResolver {
   constructor(private readonly repoService: RepoService) {}
 
@@ -39,10 +42,15 @@ export default class LanguageResolver {
   ): Promise<Language> {
     const language = this.repoService.languageRepo.create({
       projectId: input.projectId,
-      name: input.name,
+      name: input.name.toLowerCase().trim(),
       label: input.label,
     });
 
     return this.repoService.languageRepo.save(language);
+  }
+
+  @ResolveField(() => Project, { name: 'project' })
+  public async getProject(@Parent() parent: Language): Promise<Project> {
+    return this.repoService.projectRepo.findOne(parent.projectId);
   }
 }
