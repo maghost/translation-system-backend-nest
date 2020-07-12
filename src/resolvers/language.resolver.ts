@@ -35,33 +35,35 @@ export default class LanguageResolver {
     return this.repoService.languageRepo.findOne(id);
   }
 
-  @Mutation(() => Language, { nullable: true })
+  @Mutation(() => Language)
   public async createLanguage(
     @Args('data') input: LanguageInput,
   ): Promise<Language> {
-    const project = await this.repoService.projectRepo.findOne(input.projectId);
+    const { projectId, name, label } = input;
+    const project = await this.repoService.projectRepo.findOne(projectId);
 
     if (!project) {
-      return null;
+      throw new Error(`Project with ID #${projectId} does not exist.`);
     }
 
     const language = this.repoService.languageRepo.create({
-      projectId: input.projectId,
-      name: input.name.toLowerCase().trim(),
-      label: input.label,
+      projectId,
+      name: name.toLowerCase().trim(),
+      label,
     });
 
     return this.repoService.languageRepo.save(language);
   }
 
-  @Mutation(() => Language, { nullable: true })
+  @Mutation(() => Language)
   public async deleteLanguage(
     @Args('data') input: DeleteLanguageInput,
   ): Promise<Language> {
-    const language = await this.repoService.languageRepo.findOne(input.id);
+    const { id } = input;
+    const language = await this.repoService.languageRepo.findOne(id);
 
     if (!language) {
-      return null;
+      throw new Error(`Language with ID #${id} does not exist.`);
     }
 
     const copy = { ...language };

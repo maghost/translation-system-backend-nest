@@ -22,19 +22,21 @@ export default class ProjectResolver {
   public async createProject(
     @Args('data') input: ProjectInput,
   ): Promise<Project> {
-    const project = this.repoService.projectRepo.create({ name: input.name });
+    const { name } = input;
+    const project = this.repoService.projectRepo.create({ name });
 
     return this.repoService.projectRepo.save(project);
   }
 
-  @Mutation(() => Project, { nullable: true })
+  @Mutation(() => Project)
   public async deleteProject(
     @Args('data') input: DeleteProjectInput,
   ): Promise<Project> {
-    const project = await this.repoService.projectRepo.findOne(input.id);
+    const { id } = input;
+    const project = await this.repoService.projectRepo.findOne(id);
 
     if (!project) {
-      return null;
+      throw new Error(`Project with ID #${id} does not exist.`);
     }
 
     const copy = { ...project };

@@ -34,9 +34,9 @@ type Query {
 
 type Mutation {
   createProject(data: ProjectInput!): Project!
-  deleteProject(data: DeleteProjectInput!): Project
-  createLanguage(data: LanguageInput!): Language
-  deleteLanguage(data: DeleteLanguageInput!): Language
+  deleteProject(data: DeleteProjectInput!): Project!
+  createLanguage(data: LanguageInput!): Language!
+  deleteLanguage(data: DeleteLanguageInput!): Language!
 }
 
 input ProjectInput {
